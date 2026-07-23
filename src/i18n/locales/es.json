@@ -1,0 +1,30 @@
+{
+  "app": { "name": "Whiskeyjack Starter" },
+  "nav": { "home": "Inicio", "settings": "Ajustes", "menu": "Menú" },
+  "home": {
+    "title": "Whiskeyjack Starter",
+    "subtitle": "Un armazón de app pensado para el pulgar, listo desde el primer commit.",
+    "whatsHere": "Qué viene incluido",
+    "features": {
+      "shell": "Armazón – cabecera esmerilada, navegación inferior y un área de scroll que la libera.",
+      "theme": "Temas – claro / oscuro / sistema, con primer plano de contraste automático del acento.",
+      "i18n": "Internacionalización – react-i18next con sincronización de <html lang/dir> RTL.",
+      "tauri": "Listo para Tauri – los controles de ventana se montan en la cabecera, inertes en la web."
+    },
+    "primaryCta": "Acción principal",
+    "confirmDelete": "Eliminar",
+    "tapAgain": "Toca de nuevo para confirmar",
+    "clickAgain": "Haz clic de nuevo para confirmar",
+    "emptyTitle": "Tu contenido va aquí",
+    "emptySubtitle": "Reemplaza esta página de inicio con tu app.",
+    "emptyCta": "Empezar"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "theme": "Tema",
+    "themeLight": "Claro",
+    "themeDark": "Oscuro",
+    "themeSystem": "Sistema",
+    "language": "Idioma"
+  }
+}

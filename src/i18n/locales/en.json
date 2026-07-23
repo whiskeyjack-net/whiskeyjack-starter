@@ -1,0 +1,30 @@
+{
+  "app": { "name": "Whiskeyjack Starter" },
+  "nav": { "home": "Home", "settings": "Settings", "menu": "Menu" },
+  "home": {
+    "title": "Whiskeyjack Starter",
+    "subtitle": "A thumb-first app shell, wired from the first commit.",
+    "whatsHere": "What's wired up",
+    "features": {
+      "shell": "App shell – frosted header, bottom nav, and a scroll region that clears it.",
+      "theme": "Theming – light / dark / system, with the accent auto-contrast foreground.",
+      "i18n": "Internationalization – react-i18next with <html lang/dir> RTL sync.",
+      "tauri": "Tauri-ready – window controls mount in the header, inert on the web."
+    },
+    "primaryCta": "Primary action",
+    "confirmDelete": "Delete",
+    "tapAgain": "Tap again to confirm",
+    "clickAgain": "Click again to confirm",
+    "emptyTitle": "Your content goes here",
+    "emptySubtitle": "Replace this starter page with your app.",
+    "emptyCta": "Get started"
+  },
+  "settings": {
+    "title": "Settings",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System",
+    "language": "Language"
+  }
+}
