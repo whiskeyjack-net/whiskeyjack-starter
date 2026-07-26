@@ -4,6 +4,16 @@ The starter template for the Whiskeyjack design system – a thumb-first React a
 wired the way the reference apps are built, from the first commit. One web
 codebase, delivered to desktop and mobile via Tauri.
 
+> **Starting a new app?** The recommended path is the CLI – it renames the
+> project for you and always pulls the latest template:
+>
+> ```bash
+> npm create whiskeyjack@latest my-app
+> ```
+>
+> This repo is that same starter as a browsable reference: read the wiring here,
+> click **Use this template** to spin up your own repo, or fork it.
+
 ## What's wired
 
 - **App shell** – the DS `AppShell` / `AppHeader` / `HeaderNav` / `AppMain` /
