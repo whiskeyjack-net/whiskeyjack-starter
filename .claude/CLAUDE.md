@@ -47,6 +47,23 @@ The rules in `.claude/rules/` load automatically. In short:
 - **Accessibility (WCAG 2.1 AA)** is inherited from the DS primitives; see the
   accessibility rule when adding new UI.
 
+## Agents & skills
+
+This starter ships a small `.claude/` toolset, generalized from the design
+system's own workflow:
+
+| Agent | Use for |
+|-------|---------|
+| `web-dev` | Implementing features, pages, and components (design-system first) |
+| `reviewer` | Reviewing recent changes before you commit |
+| `accessibility` | WCAG 2.1 AA review of new user-facing UI |
+
+| Command | Description |
+|---------|-------------|
+| `/add-i18n-key <key> ["value"]` | Add a translation key to every locale file in `src/i18n/locales/` |
+| `/build` | Build and verify the app (`tsc` + `vite build`) |
+| `/review` | Code review on recent changes via the `reviewer` agent |
+
 ## Theming
 
 The default accent applies out of the box. To re-tint per app, add a theme CSS
