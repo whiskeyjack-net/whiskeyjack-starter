@@ -11,7 +11,12 @@ import {
   useTheme,
   applyAccentForeground,
 } from '@whiskeyjack-net/design-system'
-import { WindowControlsLeft, WindowControlsRight, useSystemAccent } from '@whiskeyjack-net/tauri'
+import {
+  WindowControlsLeft,
+  WindowControlsRight,
+  useSystemAccent,
+  isLinuxDesktop,
+} from '@whiskeyjack-net/tauri'
 import { House, GearSix, List } from '@phosphor-icons/react'
 import { useEffect } from 'react'
 
@@ -25,7 +30,18 @@ export function Layout({ children }: { children: ReactNode }) {
   useSystemAccent()
   // Theme: uncontrolled (owns localStorage). The accent foreground is computed
   // once for the default/theme accent; useSystemAccent recomputes it on desktop.
-  useTheme({ storageKey: 'whiskeyjack-starter-theme' })
+  useTheme({
+    storageKey: 'whiskeyjack-starter-theme',
+    // Mirrors the RESOLVED appearance for index.html's pre-paint script, which
+    // is what keeps the cold launch from flashing the wrong background. The
+    // preference (`storageKey`) can be 'system'; the script needs the answer.
+    launchMirrorKey: 'whiskeyjack-starter-theme-resolved',
+    // That pre-paint works by painting the root, whose background propagates to
+    // the canvas -- which also overrides a transparent `body`. The Tauri Linux
+    // window is undecorated + transparent with CSS-rounded corners, so painting
+    // it there fills the corners and squares the window off.
+    paintRoot: !isLinuxDesktop(),
+  })
   useEffect(() => { applyAccentForeground() }, [])
 
   const navItems = [

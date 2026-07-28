@@ -47,6 +47,46 @@ store). Never hand-roll `matchMedia`/`dark`-class toggling.
 - Desktop-only behavior must gate on `isDesktopTauri()`, not merely `isTauri()`
   (mobile Tauri also sets `__TAURI_INTERNALS__`).
 
+### Cold-launch theme flash
+
+A theme-correct app can still show the wrong colour for a large part of its cold
+launch. The launch is a **chain of surfaces**, each painting until the next is
+ready, and each with a different owner:
+
+| # | Surface | Owner | Colour source |
+|---|---------|-------|---------------|
+| 1 | System splash / `LaunchScreen` | OS, before the process exists | theme resource |
+| 2 | Native window background | app `onCreate` / Rust setup | persisted mirror |
+| 3 | **Webview's OWN background** | webview, until the page first paints | webview default – **white** |
+| 4 | Page background | CSS `body` rule | design tokens |
+
+Link 3 is the one that bites, and it lasts until the render-blocking stylesheet
+loads (measured at ~1.5 s on an Android cold start). This template ships the
+web-side fix already wired, and it is worth understanding before you touch it:
+
+- **`index.html`'s pre-paint script** sets `documentElement.style.backgroundColor`
+  before any stylesheet. Adding the `dark` class alone does nothing – a class is
+  inert without CSS, which is precisely the gap.
+- **`useTheme`'s `launchMirrorKey`** writes the RESOLVED appearance for that
+  script to read next launch. The plain `storageKey` holds the *preference*,
+  which can be `'system'`; the script needs the answer, not the question.
+- **`useTheme`'s `paintRoot: !isLinuxDesktop()`.** The root's background
+  propagates to the **canvas** – that is what makes the paint reach the launch
+  frame, and equally what makes it override a transparent `body`. A Tauri Linux
+  window is undecorated + `transparent` with CSS-rounded corners, so an opaque
+  root fills the corners and squares the window off. `paintRoot: false` *clears*
+  the property rather than skipping it, so it also undoes the pre-paint script,
+  which runs before the app can tell which platform it is on.
+- **The hexes in `index.html` are a hand-kept mirror of the background tokens** –
+  that script runs before any stylesheet, so it is the one place that cannot
+  read them. Sweep it whenever a background token moves. An installed PWA's
+  manifest `background_color` is a second such mirror, with no dark variant in
+  the spec, so it is only ever right for one theme.
+- **Measure before theorising here.** Record the screen and sample one averaged
+  pixel per frame (`ffmpeg -vf "fps=60,crop=…,scale=1:1" -f rawvideo`) rather
+  than reasoning about which surface is showing. That method costs minutes and
+  repeatedly contradicts plausible hypotheses.
+
 ## RTL
 
 Directional layout uses Tailwind **logical** utilities (`ps`/`pe`, `ms`/`me`,
