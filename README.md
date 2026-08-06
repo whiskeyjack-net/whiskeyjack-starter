@@ -25,10 +25,15 @@ codebase, delivered to desktop and mobile via Tauri.
   `<html lang/dir>` RTL sync; English + Spanish to start.
 - **Tauri-ready** – `@whiskeyjack-net/tauri` window controls mount in the
   header and are inert on the web.
-- **AI-native** – a pre-wired `.claude/` layer (CLAUDE.md, path-scoped rules,
-  `web-dev` / `reviewer` / `accessibility` agents, and `/add-i18n-key` / `/build`
-  / `/review` skills) so AI tooling generates code that stays on the design
-  language.
+- **One place for build constants** – `app-defines.mjs` holds every Vite
+  `define`, because `define` does not carry between `vite.config.ts` and the
+  `vitest.config.ts` you get the moment you add tests. `__APP_VERSION__` ships
+  in it and Settings displays it.
+- **AI-native** – `AGENTS.md` is the canonical, tool-neutral set of conventions,
+  so any coding agent that reads it works from the same instructions. A
+  `.claude/` layer adds Claude Code specifics on top (path-scoped rules,
+  `web-dev` / `reviewer` / `accessibility` agents, `/add-i18n-key` / `/build` /
+  `/review` skills).
 
 ## Run
 
@@ -50,8 +55,12 @@ packages from npm.
 
 ## Conventions
 
-The `.claude/` layer captures the stack's conventions as path-scoped rules
-(design-system-first, tokens via CSS variables, Phosphor icons, i18n keys, the
-app shell, RTL, accessibility, copywriting), plus `web-dev` / `reviewer` /
-`accessibility` agents and `/add-i18n-key`, `/build`, and `/review` skills. AI
-tooling loads them automatically.
+**`AGENTS.md` in the root is the canonical set** – design-system-first, tokens
+via CSS variables, Phosphor icons, i18n keys, the app shell, RTL, accessibility,
+copywriting. It is deliberately tool-neutral, so every coding agent that reads
+`AGENTS.md` gets the same rules, and so does anyone reading it by hand.
+
+The `.claude/` layer sits on top with what is specific to Claude Code: the same
+conventions as path-scoped rules that load by directory, plus `web-dev` /
+`reviewer` / `accessibility` agents and `/add-i18n-key`, `/build`, and `/review`
+skills.

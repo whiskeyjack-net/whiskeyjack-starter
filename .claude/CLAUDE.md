@@ -1,56 +1,24 @@
 # Whiskeyjack Starter
 
-A thumb-first React app built on the Whiskeyjack design system, wired for one
-web codebase delivered to desktop and mobile via Tauri.
+**Read `AGENTS.md` in the project root first.** It is the canonical set of
+conventions for this project – stack, structure, design-system rules, i18n,
+copywriting, accessibility – and it is kept tool-neutral so every coding agent
+works from the same instructions.
 
-## Stack
+This file covers what is specific to Claude Code.
 
-- React 18 + TypeScript, Vite
-- `@whiskeyjack-net/design-system` – tokens, Tailwind preset, and components
-- `@whiskeyjack-net/i18n` – the shared react-i18next bootstrap
-- `@whiskeyjack-net/tauri` – the desktop/mobile app-shell layer (inert on web)
-- Tailwind CSS (via the design-system preset), Phosphor icons
+## Path-scoped rules
 
-## Commands
+`.claude/rules/` loads automatically by path, and goes deeper than the summary
+in `AGENTS.md`:
 
-```bash
-npm run dev      # dev server
-npm run build    # tsc + vite build
-```
+| Rule | Covers |
+|------|--------|
+| `whiskeyjack-app.md` | Design-system-first conventions, the app shell, theming, Tauri gating, the cold-launch theme flash |
+| `accessibility.md` | WCAG 2.1 AA standards for new user-facing UI |
+| `copywriting.md` | Dashes, contrastive negation, and UI copy generally |
 
-## Structure
-
-```
-src/
-  main.tsx          # entry: BrowserRouter + i18n
-  App.tsx           # routes
-  index.css         # DS token + utility CSS, Tauri chrome CSS, Tailwind
-  i18n/             # createI18n(locales) + locale JSON
-  components/
-    Layout.tsx      # the app shell (AppShell + header + nav + theme + Tauri chrome)
-  pages/            # Home, Settings
-```
-
-## Conventions
-
-The rules in `.claude/rules/` load automatically. In short:
-
-- **Design-system first** – reach for a DS component/hook before writing your
-  own; import from `@whiskeyjack-net/design-system`.
-- **Tokens via CSS variables** – `var(--color-...)`, never hardcoded colors.
-- **Phosphor icons only** – the DS is icon-library-free; pass icon nodes in.
-- **All user-facing text is an i18n key** – add to every locale in `src/i18n/locales/`.
-- **The shell is DS components** – `AppShell` / `AppHeader` / `HeaderNav` /
-  `AppMain` / `MobileBottomNav`; theme via `useTheme`.
-- **En dashes, never em dashes**; no "it's not X, it's Y" copy (see the
-  copywriting rule).
-- **Accessibility (WCAG 2.1 AA)** is inherited from the DS primitives; see the
-  accessibility rule when adding new UI.
-
-## Agents & skills
-
-This starter ships a small `.claude/` toolset, generalized from the design
-system's own workflow:
+## Agents
 
 | Agent | Use for |
 |-------|---------|
@@ -58,15 +26,23 @@ system's own workflow:
 | `reviewer` | Reviewing recent changes before you commit |
 | `accessibility` | WCAG 2.1 AA review of new user-facing UI |
 
+## Skills
+
 | Command | Description |
 |---------|-------------|
 | `/add-i18n-key <key> ["value"]` | Add a translation key to every locale file in `src/i18n/locales/` |
-| `/build` | Build and verify the app (`tsc` + `vite build`) |
+| `/build` | Lint, type-check, and build the app |
 | `/review` | Code review on recent changes via the `reviewer` agent |
 
-## Theming
+## Finding a component
 
-The default accent applies out of the box. To re-tint per app, add a theme CSS
-override after the token import (see the design system's README "Theming &
-accent" – `applyAccentColor(hex)` at runtime, or a static `:root` block), or
-override the `--color-accent-*` variables.
+`components.json` registers the `@whiskeyjack` registry namespace, so the
+shadcn CLI can search and install design-system components directly:
+
+```bash
+npx shadcn@latest search @whiskeyjack
+npx shadcn@latest add @whiskeyjack/bottom-drawer
+```
+
+Prefer this over writing a component from scratch. `AGENTS.md` covers when to
+copy a component in versus importing it from the package.

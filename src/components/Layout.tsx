@@ -15,6 +15,7 @@ import {
   WindowControlsLeft,
   WindowControlsRight,
   useSystemAccent,
+  useWindowDrag,
   isLinuxDesktop,
 } from '@whiskeyjack-net/tauri'
 import { House, GearSix, List } from '@phosphor-icons/react'
@@ -28,6 +29,8 @@ export function Layout({ children }: { children: ReactNode }) {
 
   // On Tauri desktop, match the OS accent + window-control layout (no-op on web).
   useSystemAccent()
+  // Lets the header drag the window, and double-click zoom it. Inert on web.
+  const drag = useWindowDrag()
   // Theme: uncontrolled (owns localStorage). The accent foreground is computed
   // once for the default/theme accent; useSystemAccent recomputes it on desktop.
   useTheme({
@@ -63,6 +66,7 @@ export function Layout({ children }: { children: ReactNode }) {
       {/* The DS AppHeader carries the Tauri window controls in its `chrome` slot
           and clears them via `tauri-pad-controls`; inert on the web. */}
       <AppHeader
+        {...drag}
         width="none"
         rowClassName="max-w-[800px] mx-auto w-full px-4 tauri-pad-controls"
         chrome={

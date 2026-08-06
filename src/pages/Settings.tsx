@@ -45,6 +45,21 @@ export function Settings() {
           />
         </CardContent>
       </Card>
+
+      <Card>
+        <CardContent className="p-5">
+          <h2 className="mb-3 text-sm font-medium text-[var(--color-text-secondary-light)] dark:text-[var(--color-text-secondary-dark)]">
+            {t('settings.about')}
+          </h2>
+          {/* `__APP_VERSION__` comes from app-defines.mjs, which both this
+              project's Vite configs read. Displaying it here is what keeps that
+              file load-bearing: scaffolding nothing consumes gets deleted, and
+              deleting it is how the two-config problem comes back. */}
+          <p className="text-sm text-[var(--color-text-secondary-light)] dark:text-[var(--color-text-secondary-dark)]">
+            {t('settings.version', { version: __APP_VERSION__ })}
+          </p>
+        </CardContent>
+      </Card>
     </div>
   )
 }

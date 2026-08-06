@@ -25,6 +25,8 @@
     "themeLight": "Claro",
     "themeDark": "Oscuro",
     "themeSystem": "Sistema",
-    "language": "Idioma"
+    "language": "Idioma",
+    "about": "Acerca de",
+    "version": "Versión {{version}}"
   }
 }
