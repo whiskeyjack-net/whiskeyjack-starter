@@ -1,3 +1,8 @@
+---
+paths:
+  - "src/**"
+---
+
 # Accessibility Rules
 
 Target: **WCAG 2.1 AA**. Accessibility is **system-first** – the design system

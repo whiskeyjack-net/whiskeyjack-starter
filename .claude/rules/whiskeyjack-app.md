@@ -1,3 +1,9 @@
+---
+paths:
+  - "src/**"
+  - "index.html"
+---
+
 # Whiskeyjack App Rules
 
 Conventions for a React app built on the Whiskeyjack design system. Generalized

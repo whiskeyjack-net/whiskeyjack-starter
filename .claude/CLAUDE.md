@@ -17,6 +17,7 @@ in `AGENTS.md`:
 | `whiskeyjack-app.md` | Design-system-first conventions, the app shell, theming, Tauri gating, the cold-launch theme flash |
 | `accessibility.md` | WCAG 2.1 AA standards for new user-facing UI |
 | `copywriting.md` | Dashes, contrastive negation, and UI copy generally |
+| `code-comments.md` | Comments describe the code, never the history or process of a change |
 
 ## Agents
 

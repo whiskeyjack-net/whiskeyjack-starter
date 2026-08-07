@@ -1,3 +1,9 @@
+---
+paths:
+  - "src/**"
+  - "index.html"
+---
+
 # Copywriting Rules
 
 Applies to all user-facing text: UI strings, locale files, marketing copy, store

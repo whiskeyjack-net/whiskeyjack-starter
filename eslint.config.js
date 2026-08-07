@@ -4,18 +4,14 @@ import tseslint from 'typescript-eslint'
 import reactHooks from 'eslint-plugin-react-hooks'
 
 /**
- * Whiskeyjack app lint rules.
- *
- * The conventions in AGENTS.md that a machine can check live here rather than
- * only in prose, because a failing lint run is a feedback loop and prose is a
- * suggestion. Every rule below is chosen for a near-zero false-positive rate --
- * a noisy rule trains everyone, human and agent alike, to reach for
- * eslint-disable, which is worse than having no rule.
+ * Whiskeyjack app lint rules – the AGENTS.md conventions a machine can check.
+ * Every rule is chosen for a near-zero false-positive rate: a noisy rule
+ * trains everyone, human and agent alike, to reach for eslint-disable.
  *
  * Deliberately NOT enforced here: the copywriting rule against contrastive
  * negation ("It's not X, it's Y"). Its legitimate exceptions ("no email
- * needed", "instead of a modal dialog", error text) are indistinguishable from
- * the banned form by regex. That one stays a review concern.
+ * needed", error text) are indistinguishable from the banned form by regex,
+ * so that one stays a review concern.
  */
 
 /** Tailwind palette hues the design system does NOT map to tokens. */
