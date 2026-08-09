@@ -4,3 +4,11 @@ dist/
 .DS_Store
 tsconfig.tsbuildinfo
 *.tsbuildinfo
+
+# Template repo only, and the one line here the CLI does not generate: a
+# committed lock pins everyone who clicks "Use this template" to the dependency
+# set of the last regeneration, while the ranges are written to resolve the
+# newest minor. A scaffolded APP should commit its lockfile, so the template
+# cannot carry this. Preserve it across regenerations, with the README banner
+# and the LICENSE.
+package-lock.json
