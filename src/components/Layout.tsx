@@ -12,6 +12,7 @@ import {
   applyAccentForeground,
 } from '@whiskeyjack-net/design-system'
 import {
+  NarrowWindowChrome,
   WindowControlsLeft,
   WindowControlsRight,
   useSystemAccent,
@@ -63,6 +64,13 @@ export function Layout({ children }: { children: ReactNode }) {
 
   return (
     <AppShell>
+      {/* The header hides itself below `md`, taking the window controls with
+          it, so a desktop window dragged narrow would lose its drag region and
+          -- on Windows and Linux -- the only way to close itself. This is the
+          strip that stands in; the pack's CSS reserves its height on AppMain to
+          match. Inert on the web and on mobile Tauri. */}
+      <NarrowWindowChrome />
+
       {/* The DS AppHeader carries the Tauri window controls in its `chrome` slot
           and clears them via `tauri-pad-controls`; inert on the web. */}
       <AppHeader
