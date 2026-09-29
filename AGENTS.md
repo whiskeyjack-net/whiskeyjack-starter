@@ -15,6 +15,8 @@ web codebase delivered to desktop and mobile via Tauri.
 - `@whiskeyjack-net/i18n` – the shared react-i18next bootstrap
 - `@whiskeyjack-net/tauri` – the desktop/mobile app-shell layer (inert on web)
 - Tailwind CSS (via the design-system preset), Phosphor icons
+- `@fontsource-variable/inter` – self-hosted Inter Variable, the family the
+  design-system tokens name (they fall back to `system-ui` without it)
 
 ## Commands
 
@@ -22,19 +24,22 @@ web codebase delivered to desktop and mobile via Tauri.
 npm run dev      # dev server
 npm run build    # tsc + vite build
 npm run lint     # ESLint (run this before you consider a change done)
+npm run check:versions  # package.json, tauri.conf.json and Cargo.toml agree
 ```
 
 ## Structure
 
 ```
 src/
-  main.tsx          # entry: BrowserRouter + i18n
+  main.tsx          # entry: Inter font, `tauri` marker class, BrowserRouter + i18n
   App.tsx           # routes
   index.css         # DS token + utility CSS, Tauri chrome CSS, Tailwind
   i18n/             # createI18n(locales) + locale JSON
   components/
     Layout.tsx      # the app shell (AppShell + header + nav + theme + Tauri chrome)
   pages/            # Home, Settings
+scripts/
+  check-versions.mjs  # the version agreement the updater relies on
 ```
 
 ## Finding a design-system component
@@ -79,7 +84,7 @@ which component to reach for and what to avoid hand-rolling. Read it.
   display content (stats, charts, detail views) belongs in the app's main
   chrome. Modal actions go in the drawer's sticky `footer`, most-destructive
   leftmost.
-- **Buttons use the default 40px size** everywhere in the app. `size="lg"` is
+- **Buttons use the default 42px size** everywhere in the app. `size="lg"` is
   for hero CTAs only; avoid `size="sm"`.
 - **En dashes (`–`), never em dashes (`—`)**, in UI copy and code comments alike.
 - **State what a thing is.** Avoid contrastive-negation copy ("It's not X, it's
@@ -104,3 +109,4 @@ design system's README covers both under "Theming & accent".
    enforced there.
 2. `npm run build` – `tsc` plus the production build.
 3. Check any new user-facing string exists in every locale file.
+4. `npm run check:versions` before tagging a release once `src-tauri/` exists.

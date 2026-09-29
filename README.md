@@ -65,6 +65,23 @@ conventions as path-scoped rules that load by directory, plus `web-dev` /
 `reviewer` / `accessibility` agents and `/add-i18n-key`, `/build`, and `/review`
 skills.
 
+## If you want a desktop build
+
+Scaffold it with the shell already wired:
+
+```bash
+npm create whiskeyjack@latest my-app -- --tauri          # windowed
+npm create whiskeyjack@latest my-app -- --tauri --tray   # and a tray icon
+```
+
+That writes `src-tauri/` beside this app and adds `npm run tauri:dev` /
+`tauri:build`. Without it, this template's Tauri wiring stays inert, which is
+exactly what it is on the web.
+
+Retrofitting later means `npx tauri init` plus the Rust side by hand: the three
+commands from the `whiskeyjack-tauri` crate, a capability file, and the window
+block the shell layer assumes. Scaffolding it is the shorter path.
+
 ## If your app is web-only
 
 The template wires `@whiskeyjack-net/tauri` into the shell so a desktop or
@@ -75,11 +92,10 @@ and a dependency to keep current. To drop it:
 1. `npm uninstall @whiskeyjack-net/tauri @tauri-apps/api`
 2. In `src/components/Layout.tsx` – the only file that imports it – drop the
    `@whiskeyjack-net/tauri` import (`WindowControlsLeft`, `WindowControlsRight`,
-   `useSystemAccent`, `useWindowDrag`, `isLinuxDesktop`), delete the `chrome`
-   prop on `AppHeader` and the `{...drag}` spread beside it, and remove
-   `tauri-pad-controls` from its `rowClassName`. Replace the `useSystemAccent()`
-   call and the `isLinuxDesktop()` argument to `useTheme({ paintRoot })` with
-   the plain `useTheme({ storageKey })` form.
+   `NarrowWindowChrome`, `useSystemAccent`, `useWindowDrag`), delete the
+   `chrome` prop on `AppHeader` and the `{...drag}` spread beside it, remove
+   `tauri-pad-controls` from its `rowClassName`, and drop the
+   `useSystemAccent()` call.
 3. In `src/index.css`, remove the
    `@import '@whiskeyjack-net/tauri/css/window-controls';` line.
 

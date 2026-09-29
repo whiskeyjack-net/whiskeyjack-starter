@@ -12,3 +12,18 @@
 html, body, #root { height: 100%; }
 body { margin: 0; background: var(--color-background-light); }
 .dark body { background: var(--color-background-dark); }
+
+/* Native-app feel inside the Tauri webview (`html.tauri`, set in main.tsx):
+   no text selection and no iOS long-press callout on the chrome. Web builds
+   keep selection. Real text fields get it back below. */
+html.tauri body {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+html.tauri input,
+html.tauri textarea,
+html.tauri [contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+}
