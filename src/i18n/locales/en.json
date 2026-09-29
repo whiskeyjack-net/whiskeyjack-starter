@@ -1,6 +1,17 @@
 {
   "app": { "name": "Whiskeyjack Starter" },
+  "common": { "cancel": "Cancel" },
   "nav": { "home": "Home", "settings": "Settings", "menu": "Menu" },
+  "window": { "close": "Close", "minimize": "Minimize", "maximize": "Maximize" },
+  "update": {
+    "available": "Version {{version}} is available",
+    "download": "Download",
+    "later": "Dismiss",
+    "checking": "Checking for updates…",
+    "currentVersion": "Current version {{version}}",
+    "upToDate": "You're up to date",
+    "error": "Couldn't check for updates. Please try again later."
+  },
   "home": {
     "title": "Whiskeyjack Starter",
     "subtitle": "A thumb-first app shell, wired from the first commit.",

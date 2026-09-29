@@ -1,6 +1,17 @@
 {
   "app": { "name": "Whiskeyjack Starter" },
+  "common": { "cancel": "Cancelar" },
   "nav": { "home": "Inicio", "settings": "Ajustes", "menu": "Menú" },
+  "window": { "close": "Cerrar", "minimize": "Minimizar", "maximize": "Maximizar" },
+  "update": {
+    "available": "La versión {{version}} está disponible",
+    "download": "Descargar",
+    "later": "Descartar",
+    "checking": "Buscando actualizaciones…",
+    "currentVersion": "Versión actual {{version}}",
+    "upToDate": "Estás al día",
+    "error": "No se pudieron buscar actualizaciones. Inténtalo de nuevo más tarde."
+  },
   "home": {
     "title": "Whiskeyjack Starter",
     "subtitle": "Un armazón de app pensado para el pulgar, listo desde el primer commit.",

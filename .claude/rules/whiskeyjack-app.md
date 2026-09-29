@@ -52,6 +52,48 @@ store). Never hand-roll `matchMedia`/`dark`-class toggling.
   guards) is inert off Tauri, so it's safe in a plain web build.
 - Desktop-only behavior must gate on `isDesktopTauri()`, not merely `isTauri()`
   (mobile Tauri also sets `__TAURI_INTERNALS__`).
+- Drag the window through `useWindowDrag()` spread on the `AppHeader`. It waits
+  for 4 CSS px of pointer travel before `startDragging()`, so a click into the
+  window leaves it in place. A `data-tauri-drag-region` attribute drags on the
+  press itself, and with `acceptFirstMouse` on that moves the window on every
+  activating click.
+- An Icon Composer `AppIcon.icon` bundle reaches the app once per OS, by hand:
+  compiled to `Assets.car` and injected via `bundle.macOS.files` on macOS, added
+  to the iOS target's sources in `gen/apple/project.yml` on iOS, with the legacy
+  `AppIcon.appiconset` removed. `tauri icon` ships a flat icon otherwise, and a
+  flat icon is valid, so nothing warns. The `@whiskeyjack-net/tauri` README has
+  the steps.
+- Tray icons ship per OS: one template PNG on macOS (alpha only, the system
+  tints it), the same PNG on Linux (appindicator scales it), and on Windows a
+  PNG per DPI size in white for a dark taskbar and black for a light one,
+  re-picked on `ThemeChanged` and `ScaleFactorChanged`. The
+  `@whiskeyjack-net/tauri` README's "Tray icons" has the sizes.
+
+- Tauri-only CSS gates on `html.tauri`, set in `main.tsx` for desktop and
+  mobile webviews alike; the pack's `.tauri-desktop` is desktop-only. Text
+  selection is off inside Tauri and on for the web.
+- `vite.config.ts` reads `TAURI_ENV_PLATFORM` (the Tauri gate) and
+  `TAURI_DEV_HOST` (on-device dev). `strictPort` is deliberate: keep
+  `build.devUrl` in `tauri.conf.json` on port 5173, so a taken port fails
+  loudly instead of leaving `devUrl` pointing at nothing.
+- `window.*`, `update.*` and `common.cancel` are read by `@whiskeyjack-net/tauri`
+  for the window controls and the updater; keep them in every locale.
+- With `--pwa`, the service worker and manifest are skipped under Tauri, so the
+  packaged app never precaches its own bundle.
+- **A `tauri.<platform>.conf.json` replaces the whole `app.windows` array, so
+  each one spells the window out in full.** Tauri merges the platform file with
+  json-patch, where an array overwrites its target rather than merging into it:
+  a file carrying only `decorations` leaves that platform on Tauri's defaults
+  for size, minimum size and every other window key, and a window still opens,
+  so nothing reports it. `npm run check:tauri-windows` in the source monorepo
+  guards the same pair of files.
+- **`tauri-plugin-window-state` persists the decoration flag by default, which
+  outranks the config.** `StateFlags::all()` includes `DECORATIONS`, so
+  `decorated` is read back from `.window-state.json` on every launch after the
+  first, and a state file written while the app drew its own chrome keeps the
+  window undecorated no matter what `tauri.linux.conf.json` says afterwards.
+  The template registers the plugin with that one flag cleared; keep it cleared
+  unless decoration is genuinely something the user toggles.
 
 ### Cold-launch theme flash
 
@@ -76,13 +118,14 @@ web-side fix already wired, and it is worth understanding before you touch it:
 - **`useTheme`'s `launchMirrorKey`** writes the RESOLVED appearance for that
   script to read next launch. The plain `storageKey` holds the *preference*,
   which can be `'system'`; the script needs the answer, not the question.
-- **`useTheme`'s `paintRoot: !isLinuxDesktop()`.** The root's background
-  propagates to the **canvas** – that is what makes the paint reach the launch
-  frame, and equally what makes it override a transparent `body`. A Tauri Linux
-  window is undecorated + `transparent` with CSS-rounded corners, so an opaque
-  root fills the corners and squares the window off. `paintRoot: false` *clears*
-  the property rather than skipping it, so it also undoes the pre-paint script,
-  which runs before the app can tell which platform it is on.
+- **`useTheme`'s `paintRoot`** is on by default and wants to stay that way. The
+  root's background propagates to the **canvas**, which is what makes the paint
+  reach the launch frame, and equally what makes it override a transparent
+  `body`. Only an app that gives its window genuine alpha (Tauri with
+  `decorations: false` + `transparent: true`, rounding its corners in CSS) needs
+  `paintRoot: false`, which *clears* the property rather than skipping it, so it
+  also undoes the pre-paint script that ran before the app could tell which
+  platform it was on.
 - **The hexes in `index.html` are a hand-kept mirror of the background tokens** –
   that script runs before any stylesheet, so it is the one place that cannot
   read them. Sweep it whenever a background token moves. An installed PWA's
